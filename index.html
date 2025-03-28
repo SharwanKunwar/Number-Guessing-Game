@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Number Guessing Game</title>
+  </head>
+
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    html,
+    body {
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(185, 124, 243, 0.527);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #main {
+      width: 350px;
+      height: 600px;
+      background-color: white;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* display: none; */
+      gap: 20px;
+      border: none;
+    }
+
+    #title {
+      color: rgb(37, 40, 201);
+      font-size: 20px;
+      font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+      text-shadow: 1px 1px 1px rgb(144, 23, 243);
+    }
+    #lable01 {
+      font-size: 18px;
+      font-weight: 900;
+      font-family: monospace;
+    }
+    #inputFild {
+      margin-top: 5px;
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      font-size: 20px;
+      color: gray;
+      border: 1px solid gray;
+      border-radius: 10px;
+      font-family: monospace;
+    }
+    #btn {
+      width: 40%;
+      height: 40px;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+      border: none;
+      margin-top: 20px;
+      background-color: black;
+      color: white;
+    }
+    p {
+      margin-top: 15px;
+      color: gray;
+      font-family: monospace;
+    }
+
+    /* result rection code */
+
+    #result {
+      width: 350px;
+      height: 300px;
+      box-shadow: inset 1px 1px 5px;
+      /* background-color: red; */
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #ResultTitle {
+      width: 100%;
+      /* background-color: red; */
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* border-radius: 20px; */
+      border-bottom: 1px solid rgba(84, 87, 223, 0.466);
+      font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+      font-style: bold;
+    }
+    #details {
+      width: 90%;
+      height: 50%;
+      padding: 10px;
+      /* background-color: red; */
+    }
+    .info_view {
+      font-size: 20px;
+      font-family: monospace;
+    }
+    #hint {
+      width: 90%;
+      height: 50px;
+      border-radius: 10px;
+      /* border: 1px solid black; */
+      /* background-color: red; */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 1px 1px 8px;
+    }
+    #btn_box {
+      width: 90%;
+      /* background-color: red; */
+      display: flex;
+      gap: 5px;
+      justify-content: center;
+    }
+    #reset {
+      width: 20%;
+      height: 40px;
+      border: none;
+      margin-top: 20px;
+      background-color: black;
+      color: white;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+  </style>
+
+  <body>
+    <div id="main">
+      <div id="result">
+        <div id="ResultTitle">
+          <h1>Result</h1>
+        </div>
+        <div id="details">
+          <span class="info_view"><b>Attempt: </b></span
+          ><span id="Attempt_Value" class="info_view" style="color: gray; font-size: 18px;">Attempt Value</span><br />
+          <span class="info_view"><b>Chance: </b></span
+          ><span id="Chance_Value" class="info_view" style="color: gray; font-size: 18px;">Chance Value</span><br />
+          <span class="info_view"><b>Perivious Guess: </b></span
+          ><span id="PG_Value" class="info_view" style="color: gray; font-size: 18px;">PG Value</span><br />
+          <span class="info_view"><b>Status: </b></span
+          ><span id="Status_Value" class="info_view" style="color: gray; font-size: 15px;">Status Value</span><br />
+        </div>
+        <div id="hint">
+          <h5>Waiting for your guess</h5>
+        </div>
+      </div>
+
+      <section id="title">
+        <h3>Number Guessing Game</h3>
+      </section>
+      <section id="inputBox">
+        <label name="guess" id="lable01" type="text"
+          >Guess<br />
+          <input name="guess" type="text" id="inputFild" placeholder="..." />
+        </label>
+      </section>
+
+      <section id="btn_box">
+        <button id="btn">Compare</button>
+        <button id="reset">Reset</button>
+      </section>
+      <p>Guess the number between 1 to 11</p>
+    </div>
+
+    <!-- <script src="script.js"></script> -->
+    <script>
+      const btn = document.querySelector("#btn");
+      const resetBtn = document.querySelector("#reset");
+      const hint = document.querySelector("#hint");
+
+      resetBtn.addEventListener("click", function () {
+        location.reload();
+      });
+
+      let attempts = 0;
+      let chance = 5;
+      let previousGuess = undefined;
+      let status = "Thinking...";
+
+      const attemptView = document.getElementById("Attempt_Value");
+      attemptView.textContent = attempts;
+      const chanceView = document.getElementById("Chance_Value");
+      chanceView.textContent = chance;
+      const previousGuessView = document.getElementById("PG_Value");
+      previousGuessView.textContent = previousGuess;
+      const statusView = document.getElementById("Status_Value");
+      statusView.textContent = status;
+
+      const computerGuess = Math.round(Math.random() * 10 + 1);
+
+      function checkResult(attempts) {
+        let A = attempts;
+        let C = 4 - A;
+
+        const attemptView = document.getElementById("Attempt_Value");
+        const chanceView = document.getElementById("Chance_Value");
+
+        const userGuess = Number(document.getElementById("inputFild").value);
+
+        const pgView = document.getElementById("PG_Value");
+        
+
+        if (userGuess <= 0 || userGuess === "" || isNaN(userGuess)) {
+          hint.textContent = "Guess the number between 1 to 11";
+          setTimeout(() => {
+            hint.innerHTML = "...";
+            location.reload();
+          }, 800);
+        } else {
+            pgView.innerHTML = userGuess;
+          if (userGuess > computerGuess) {
+            hint.innerHTML = "your guess higher";
+            A++;
+            attemptView.innerHTML = A;
+            chanceView.textContent = C;
+          } else if (userGuess < computerGuess) {
+            hint.innerHTML = "your guess is lower";
+            A++;
+            attemptView.innerHTML = A;
+            chanceView.textContent = C;
+          } else if (userGuess === computerGuess) {
+            A++;
+            attemptView.innerHTML = A;
+            chanceView.textContent = C;
+            hint.innerHTML = `You guess the Number ${computerGuess} in ${attempts + 1} attempts.`;
+            statusView.innerHTML = "Passed"
+            btn.dispatchEvent();
+          }
+
+          console.log(A);
+
+          return A;
+        }
+      }
+
+      resetBtn.addEventListener("click", function (e) {
+        resetBtn.location.reload();
+      });
+
+      let track = attempts;
+
+      btn.addEventListener("click", function () {
+        let hold = checkResult(attempts);
+        if (hold == 5) {
+          hint.innerHTML = `You lose the game number was ${computerGuess}`;
+          statusView.innerHTML = "Failed"
+          btn.dispatchEvent();
+        }
+        attempts = hold;
+      });
+    </script>
+  </body>
+</html>
